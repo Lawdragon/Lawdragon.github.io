@@ -193,7 +193,7 @@
   const ipt = document.querySelector('#search-input')
   const btn = document.querySelector('#search-btn')
   const layer = document.querySelector('#search-layer')
-  const posts = JSON.parse(`[{"title":"Hello World","path":"2023/07/04/hello-world/"},{"title":"Hello World3","path":"2023/07/04/hello-world copy/"},{"title":"Hello World2","path":"2023/07/04/hello-world copy 2/"},{"title":"解决linux根目录磁盘空间不足问题","path":"2023/07/05/解决linux根目录磁盘空间不足问题/"},{"title":"markdown语法记录","path":"2023/07/04/记录/"}]`)
+  const posts = JSON.parse(`[{"title":"Hello World2","path":"2023/07/04/hello-world copy 2/"},{"title":"Hello World","path":"2023/07/04/hello-world/"},{"title":"解决linux根目录磁盘空间不足问题","path":"2023/07/05/解决linux根目录磁盘空间不足问题/"},{"title":"Hello World3","path":"2023/07/04/hello-world copy/"},{"title":"markdown语法记录","path":"2023/07/04/记录/"}]`)
   ipt.addEventListener('keyup', e => {
     if (e.key === 'Enter') {
       handleSearch()
@@ -508,11 +508,16 @@ pre:active {
 
 <h3 id="2-markdown插入链接"><a href="#2-markdown插入链接" class="headerlink" title="2.markdown插入链接"></a>2.markdown插入链接</h3><p>语法如下：<br><a href="%E9%93%BE%E6%8E%A5%E5%9C%B0%E5%9D%80">链接名称</a></p>
 <p>或者</p>
-<p>&lt;链接地址&gt;<br>注意：符号全英文</p>
+<p>&lt;链接地址&gt;<br><strong>注意：符号全英文</strong></p>
 <p>比如：</p>
 <p><code>[这是百度](https://www.baidu.com)</code></p>
 <p>效果：<br><a target="_blank" rel="noopener" href="https://www.baidu.com/">这是百度</a></p>
-<h3 id="3-markdown插入图片"><a href="#3-markdown插入图片" class="headerlink" title="3.markdown插入图片"></a>3.markdown插入图片</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs ![图片描述，可写可不写，但是中括号要有](图片地址，本地链接或者URL地址。)"><br><br>比如我此文章的图片：<br><br>![markdown](https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1613194509,3683268681&amp;fm=26&amp;gp=0.jpg)<br><br></code></pre></td></tr></table></figure>
+<h3 id="3-markdown插入图片"><a href="#3-markdown插入图片" class="headerlink" title="3.markdown插入图片"></a>3.markdown插入图片</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs plaintext"><br>![图片描述，可写可不写，但是中括号要有](图片地址，本地链接或者URL地址。)<br><br><br>比如我此文章的图片：<br><br>![markdown](https://img3.kuwo.cn/star/albumcover/300/93/8/445164643.jpg)<br><br></code></pre></td></tr></table></figure>
+<p><img src="/%E5%9B%BE%E7%89%87%E5%9C%B0%E5%9D%80%EF%BC%8C%E6%9C%AC%E5%9C%B0%E9%93%BE%E6%8E%A5%E6%88%96%E8%80%85URL%E5%9C%B0%E5%9D%80%E3%80%82" alt="图片描述，可写可不写，但是中括号要有"></p>
+<p>比如我此文章的图片：</p>
+<p><img src="https://img3.kuwo.cn/star/albumcover/300/93/8/445164643.jpg" alt="markdown"></p>
+<p><strong>这里的图片需要的是网络链接的，本地图片上传很麻烦且易丢失，所以可以使用有道云的图片。</strong></p>
+<p><strong>我们需要添加到markdown文件中，——我们只需要把图片保存到有道云笔记中，然后右键分享图片，查看分享，右键复制图片地址——</strong></p>
 <h3 id="4-markdown表格"><a href="#4-markdown表格" class="headerlink" title="4. markdown表格"></a>4. markdown表格</h3><p>每排单元格要用| 分开 表头与内容用 — 分开</p>
 <p>语法如下:</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">|  表头   | 表头  | 表头 | 表头 |<br>| :---  | ---:  | :--: | ---- |<br>| 单元格  | 单元格 |单元格|单元格|<br>| 单元格  | 单元格 |单元格|单元格|<br></code></pre></td></tr></table></figure>

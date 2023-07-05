@@ -193,7 +193,7 @@
   const ipt = document.querySelector('#search-input')
   const btn = document.querySelector('#search-btn')
   const layer = document.querySelector('#search-layer')
-  const posts = JSON.parse(`[{"title":"Hello World","path":"2023/07/04/hello-world/"},{"title":"Hello World3","path":"2023/07/04/hello-world copy/"},{"title":"Hello World2","path":"2023/07/04/hello-world copy 2/"},{"title":"解决linux根目录磁盘空间不足问题","path":"2023/07/05/解决linux根目录磁盘空间不足问题/"},{"title":"markdown语法记录","path":"2023/07/04/记录/"}]`)
+  const posts = JSON.parse(`[{"title":"Hello World2","path":"2023/07/04/hello-world copy 2/"},{"title":"Hello World","path":"2023/07/04/hello-world/"},{"title":"解决linux根目录磁盘空间不足问题","path":"2023/07/05/解决linux根目录磁盘空间不足问题/"},{"title":"Hello World3","path":"2023/07/04/hello-world copy/"},{"title":"markdown语法记录","path":"2023/07/04/记录/"}]`)
   ipt.addEventListener('keyup', e => {
     if (e.key === 'Enter') {
       handleSearch()
@@ -393,7 +393,9 @@ pre:active {
       </div>
     </div>
     <article class="article-content">
-      <h1 id="解决linux根目录磁盘空间不足问题"><a href="#解决linux根目录磁盘空间不足问题" class="headerlink" title="解决linux根目录磁盘空间不足问题"></a>解决linux根目录磁盘空间不足问题</h1><p>问题：一开始创建虚拟机，分配给虚拟机的磁盘空间太小了，所以磁盘空间很快就会填满。如果根目录的磁盘空间占用超过90%，会导致无法再新安装软件。</p>
+      <h3 id="解决linux根目录磁盘空间不足问题"><a href="#解决linux根目录磁盘空间不足问题" class="headerlink" title="解决linux根目录磁盘空间不足问题"></a>解决linux根目录磁盘空间不足问题</h3><p>问题：一开始创建虚拟机，分配给虚拟机的磁盘空间太小了，所以磁盘空间很快就会填满。如果根目录的磁盘空间占用超过90%，会导致无法再新安装软件。</p>
+<p>可以通过df -h命令查看磁盘的剩余空间。</p>
+<p>df命令的英文全称即“Disk Free”，顾名思义功能是用于显示系统上可使用的磁盘空间<br><img src="/public%5Cimgs%5Cavatar-bg.jpeg" alt="png"></p>
 
     </article>
     
@@ -415,7 +417,7 @@ pre:active {
     <div class="article-catelogue--wrapper">
       <div class="catelogue catelogue-1">
         <h3>目录</h3>
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3linux%E6%A0%B9%E7%9B%AE%E5%BD%95%E7%A3%81%E7%9B%98%E7%A9%BA%E9%97%B4%E4%B8%8D%E8%B6%B3%E9%97%AE%E9%A2%98"><span class="toc-number">1.</span> <span class="toc-text">解决linux根目录磁盘空间不足问题</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3linux%E6%A0%B9%E7%9B%AE%E5%BD%95%E7%A3%81%E7%9B%98%E7%A9%BA%E9%97%B4%E4%B8%8D%E8%B6%B3%E9%97%AE%E9%A2%98"><span class="toc-number">1.</span> <span class="toc-text">解决linux根目录磁盘空间不足问题</span></a></li></ol>
       </div>
       
         <div class="catelogue catelogue-2">
