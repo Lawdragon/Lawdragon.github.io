@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>我的技术与生活——关于数据分析 3 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="shortcut icon" href="/imgs/shortcut-icon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="/css/public.css" />
+  <link rel="stylesheet" href="/css/layout.css" />
+  <link rel="stylesheet" href="/css/iconfont.css" />
+  <link rel="stylesheet" href="/css/APlayer.min.css" />
+  <script src="/js/APlayer.min.js"></script>
+  <script src="/js/jquery.min.js"></script>
+  <script src="/js/jquery.pjax.min.js"></script>
+
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script>
+    document.title = `我的技术与生活——关于数据分析 3`
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<style>
+  .load {
+    width: 100%;
+    height: 100vh;
+    background-color: rgb(37, 35, 40);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 9999;
+  }
+  .load-circle {
+    width: 80px;
+    height: 80px;
+    border: 8px solid orange;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: rotate 1s linear infinite;
+    filter: drop-shadow(0 0 3px orange);
+  }
+  .load-circle-inner {
+    width: 40px;
+    height: 40px;
+    border: 8px solid orange;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: rotate-reverse .5s linear infinite;
+  }
+  .load-text {
+    margin-top: 20px;
+    font-size: 24px;
+    color: orange;
+    display: flex;
+  }
+  .load-text span {
+    margin: 0 5px;
+    text-shadow: 5px 5px 5px orange;
+    animation: move 1s linear infinite;
+  }
+  .load-text span:nth-child(1) {
+    animation-delay: -0.6s;
+  }
+  .load-text span:nth-child(2) {
+    animation-delay: -0.5s;
+  }
+  .load-text span:nth-child(3) {
+    animation-delay: -0.4s;
+  }
+  .load-text span:nth-child(4) {
+    animation-delay: -0.3s;
+  }
+  .load-text span:nth-child(5) {
+    animation-delay: -0.2s;
+  }
+  .load-text span:nth-child(6) {
+    animation-delay: -0.1s;
+  }
+  @keyframes rotate {
+    0% { transform: rotate(0); }
+    100% { transform: rotate(360deg); }
+  }
+  @keyframes rotate-reverse {
+    0% { transform: rotate(0); }
+    100% { transform: rotate(-360deg); }
+  }
+  @keyframes move {
+    0% { transform: translateY(0%) rotate(0) scale(1); }
+    20% { transform: translateY(20%) rotate(10deg) scale(1.2); }
+    80% { transform: translateY(-10%) rotate(-20deg) scale(.8);}
+    100% { transform: translateY(0) rotate(0) scale(1); }
+  }
+
+  .progress {
+    position: fixed;
+    left: 0; top: 0;
+    width: 0;
+    height: 3px;
+    background-color: green;
+    transition: all cubic-bezier(0.215, 0.610, 0.355, 1) .1s;
+    z-index: 9999;
+  }
+
+  .to-up {
+    animation: toUp .5s 1;
+  }
+  .gray {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 9999;
+    display: none;
+    pointer-events: none;
+    background-color: #000;
+    mix-blend-mode: color;
+  }
+  @keyframes toUp {
+    from { transform: translateY(15px); opacity: 0; }
+    to { transform: translateY(0) ; opacity: 1; }
+  }
+</style>
+<body>
+  <div id="load" class="load">
+    <div class="load-circle">
+      <div class="load-circle-inner"></div>
+    </div>
+    <p class="load-text">
+      <span>L</span>
+      <span>O</span>
+      <span>A</span>
+      <span>D</span>
+      <span>I</span>
+      <span>N</span>
+      <span>G</span>
+    </p>
+  </div>
+  <div id="container" class="container w-100 vh-100" style="display: none;">
+    <header class="header">
+  <div class="header-wrapper">
+    <div class="header-left">
+      <div class="header-search">
+        <input id="search-input" type="text" class="header-search--input" placeholder="请输入要检索的文章标题" />
+        <span id="search-btn" class="header-search--icon"><i class="iconfont icon-sousuo"></i></span>
+      </div>
+      <div id="search-layer" class="header-search--layer hidden">
+        <p class="title">
+          <span>以下是搜索内容：</span>
+          <span id="close-layer-btn">关闭</span>
+        </p>
+        <ul>
+        </ul>
+      </div>
+    </div>
+    <div class="header-right">
+      <ul class="header-menu">
+        <li>
+          <a href="https://lawdragon.github.io/">
+            <i class="header-menu--icon iconfont icon-shouye"></i>
+            <span class="header-menu--span">首页</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://lawdragon.github.io/log">
+            <i class="header-menu--icon iconfont icon-rizhi"></i>
+            <span class="header-menu--span">日志</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://lawdragon.github.io/link">
+            <i class="header-menu--icon iconfont icon-youqinglianjie"></i>
+            <span class="header-menu--span">友情链接</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://lawdragon.github.io/about">
+            <i class="header-menu--icon iconfont icon-guanyuwomen"></i>
+            <span class="header-menu--span">关于我</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</header>
+
+<script>
+  const ipt = document.querySelector('#search-input')
+  const btn = document.querySelector('#search-btn')
+  const layer = document.querySelector('#search-layer')
+  const posts = JSON.parse(`[{"title":"Java开发文档","path":"2023/07/04/Java开发文档/"},{"title":"markdown语法记录","path":"2023/07/04/markdown操作笔记/"},{"title":"Hello World","path":"2023/07/04/hello-world/"},{"title":"redis缓存机制","path":"2023/07/23/redis缓存机制/"},{"title":"mysql中sql的小技巧","path":"2023/07/23/mysql操作sql的小技巧/"},{"title":"扩大linux磁盘空间","path":"2023/07/05/扩大linux磁盘空间/"},{"title":"各大注解作用及示例","path":"2023/07/04/各大注解作用及示例/"},{"title":"关于数据分析 1","path":"2023/09/27/数据分析浅谈1/"},{"title":"关于数据分析 2","path":"2023/09/27/数据分析浅谈2/"},{"title":"关于数据分析 3","path":"2023/09/27/数据分析浅谈3/"},{"title":"关于数据分析 4","path":"2023/09/27/数据分析浅谈4/"}]`)
+  ipt.addEventListener('keyup', e => {
+    if (e.key === 'Enter') {
+      handleSearch()
+    }
+  })
+  btn.addEventListener('click', () => {
+    handleSearch()
+  })
+
+  document.querySelector('#close-layer-btn').addEventListener('click', () => {
+    layer.classList.toggle('hidden')
+  })
+
+  function handleSearch() {
+    if (ipt.value.trim() === '') {
+      return
+    }
+    let html = ''
+    const targetPosts = posts.filter(post => post.title.includes(ipt.value))
+    targetPosts.forEach(post => {
+      html += `
+        <li>
+          <div>
+            <a href="/${post.path}">${post.title.replace(new RegExp(ipt.value), `<span>${ipt.value}</span>`)}</a>
+          </div>
+          <img src="${post.cover || '/imgs/default-cover.webp' }" />
+        </li>
+      `
+    })
+    if (html.trim () === '') {
+      html += '<p class="empty">没有搜索到内容</p>'
+    }
+    layer.querySelector('ul').innerHTML = html
+    layer.classList.remove('hidden')
+  }
+</script> 
+    <section id="main" class="main">
+      <div class="main-left-wrapper">
+<div class="main-left">
+  <div class="main-left--block">
+    <div class="main-left--info">
+      <img src="/imgs/avatar.jpg"" class="main-left--avatar" />
+      <div class="main-left--intro">
+        <p class="main-left--name">Gray</p>
+        <div class="main-left--tags">
+          <span class="main-left--tag">游戏</span>
+          <span class="main-left--tag">二次元</span>
+        </div>
+      </div>
+    </div>
+  
+    <div>
+      <div class="main-left--motto">
+        <p>“昨天是段历史，明天是个谜团，而今天是天赐的礼物”</p>
+        <p>“像珍惜礼物一样，珍惜今天”</p>
+      </div>
+      <div class="main-left--github">
+        <span class="line"></span>
+        <a target="_blank" rel="noopener" href="https://github.com/Lawdragon"><i class="logo iconfont icon-github-fill"></i></a>
+        <span class="line"></span>
+      </div>
+      <div class="main-left--statics">
+        <a href="/categories">
+          <div>
+            <span>0</span>
+            <span>分类</span>
+          </div>
+        </a>
+        <a href="/tags">
+          <div>
+            <span>0</span>
+            <span>标签</span>
+          </div>
+        </a>
+        <a href="/archives">
+          <div>
+            <span>2 </span>
+            <span>归档</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-left--block">
+    <ul class="main-left--menu">
+      
+        <li>
+          <a href="/">
+            <span class="header-menu--span">小站首页</span>
+            <i class="header-menu--icon iconfont icon-shouye"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a href="/log">
+            <span class="header-menu--span">个人日志</span>
+            <i class="header-menu--icon iconfont icon-rizhi"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a href="/link">
+            <span class="header-menu--span">友情链接</span>
+            <i class="header-menu--icon iconfont icon-youqinglianjie"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a href="/about">
+            <span class="header-menu--span">关于自己</span>
+            <i class="header-menu--icon iconfont icon-guanyuwomen"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a href="/tools">
+            <span class="header-menu--span">我的工具</span>
+            <i class="header-menu--icon iconfont icon-gongju"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="main-left--block">
+    <div class="main-left--site">
+      <h5 class="main-left--title">
+        <span>站点信息</span>
+        <i class="iconfont icon-zhandian"></i>
+      </h5>
+      <p class="main-left--subtitle">
+        <span>文章数目：</span>
+        <span>11 篇</span>
+      </p>
+      <p class="main-left--subtitle">
+        <span>最近动态：</span>
+        <span>今天</span>
+      </p>
+      <p class="main-left--subtitle">
+        <span>上线时间：</span>
+        <span>87天</span>
+      </p>
+      <p class="main-left--subtitle">
+        <span>当前版本：</span>
+        <span>v1.0.2</span>
+      </p>
+    </div>
+  </div>
+</div></div>
+      <div id="main-container" class="main-container">
+
+
+  <style>
+pre::-webkit-scrollbar {
+  width: 5px;
+  height: 10px;
+  background-color:#F5F5F5;
+}
+/*定义滚动条轨道
+内阴影+圆角*/
+pre::-webkit-scrollbar-track {
+  background-color:#F5F5F5;
+}
+/*定义滑块
+内阴影+圆角*/
+pre::-webkit-scrollbar-thumb {
+  background-color: rgb(69, 83, 100);
+}
+
+pre:active {
+  background-color: rgb(81, 95, 116);
+}
+</style>
+
+<div class="article-container">
+  <div class="article">
+    <h1 class="article-title">关于数据分析 3</h1>
+    <div class="article-info">
+      <div class="article-info--item">
+        <div class="article-info--info">
+          
+          <div class="article-info--categories">
+            <span>分类：</span>
+            
+          </div>
+          
+          
+          <div class="article-info--tags">
+            <span>标签：</span>
+            
+          </div>
+          
+          <p class="article-info--date">日期：2023-09-27 22:40:08</p>
+        </div>
+        <img src="/imgs/default-cover.webp" alt="" class="article-cover">
+      </div>
+    </div>
+    <article class="article-content">
+      <h3 id="数据分析的基本流程"><a href="#数据分析的基本流程" class="headerlink" title="数据分析的基本流程"></a>数据分析的基本流程</h3><p>如何做好数据分析<br><img src="/../img/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E6%B5%81%E7%A8%8B.png" alt="数据分析图"></p>
+<p>可以大致看出数据分析分为5个步骤：</p>
+<h4 id="Step1：目标确定"><a href="#Step1：目标确定" class="headerlink" title="Step1：目标确定"></a>Step1：目标确定</h4><p>目标大部分是由甲方、客户或上级要求确定，但在第一次的数据报告中，需要我们自己确定目标，完成后经过审阅，可以再适当修改。在这个阶段，我们需要注意几个方面：</p>
+<p>（1）尽量选择一个自己比较擅长&#x2F;感兴趣的学科领域</p>
+<p>（2）选择该学科领域的某一个或几个具体的研究方向</p>
+<p>（3）了解研究方向中常用的研究方法、公开&#x2F;可获取的数据</p>
+<p>自己比较擅长&#x2F;感兴趣的领域可以让我们了解事物的本质和一般的发展规律。如果选择合适，我们就比普通的数据分析者更有可能写出有深度的数据分析报告。</p>
+<p>选择具体的研究方向可以让我们有一个明确的脉络，而不是一味地堆砌数据。什么样的目标收集什么样的数据，无关的数据收集不仅耗费我们的精力，还会对数据分析造成干扰。</p>
+<p>了解常用的研究方法可以让我们快速入手某一个方向的实际操作；提前了解数据的可得性是我们进行数据分析的基础。</p>
+<h4 id="Step2：数据准备"><a href="#Step2：数据准备" class="headerlink" title="Step2：数据准备"></a>Step2：数据准备</h4><h5 id="2-1数据获取"><a href="#2-1数据获取" class="headerlink" title="2.1数据获取"></a>2.1数据获取</h5><p>目标定下来后就需要获取数据了，实际上第一步中已经了解了自己所在研究方向上所需的数据来源。现实情况是很多人到这一步仍然不知道使用什么数据，如果确实不清楚，就再重新思考我们的选题。</p>
+<p>当然，也有一些通用的数据获取方法：<br>（1）搜索引擎输入关键词，例如要找1km逐小时地表温度数据，可以搜索“中国1km分辨率逐小时地表温度数据集”，结果如下：</p>
+<p><img src="/../img/%E6%B0%94%E6%B8%A9%E6%95%B0%E6%8D%AE%E9%9B%86%E6%90%9C%E7%B4%A2.png" alt="气温数据集图"><br>其中的第一个结果，就是我们要找的数据，点进去就可以发现能够免费下载全国1km逐小时温度数据集，数据来自“中国科学院西北生态环境资源研究院”，保证了数据的权威性。</p>
+<p>（2）通过官方的统计局网站获取，可以保证数据的权威性。例如国家统计局发布的有逐年国内生产总值数据，我们可以将数据复制粘贴到Excel中。<br><img src="/../img/%E5%9B%BD%E5%AE%B6%E7%BB%9F%E8%AE%A1%E5%B1%80%E6%95%B0%E6%8D%AE.png" alt="国家统计局数据图"><br>但是大部分情况下，我们在搜索引擎中可能找不到需要的数据，不可否认的是，搜索结果中经常会给我们带来数据存在的一些线索，要善于运用浏览器。</p>
+<p>（3）数据打包网站或者数据采集平台获取。例如淘宝有关于数据付费下载服务，对于网页版的大数据采集，也有一些平台支持类似爬虫的数据获取功能。</p>
+<p>（4）自行收集数据：通过分发调查问卷、在线填写问卷、手工复制数据也都是可以的。但是这种方法用的比较少，比较耗费人力物力。</p>
+<p>在数据收集阶段我们一定要保证数据的安全，不得随意获取使用用户隐私数据、不可散播非公开数据，是数据分析的基本道德要求，使用数据时注明数据来源。</p>
+<h5 id="2-2数据清洗"><a href="#2-2数据清洗" class="headerlink" title="2.2数据清洗"></a>2.2数据清洗</h5><p>几乎所有收集到的数据都需要对数据进行处理，使之符合数据分析的要求。数据清洗包括但不限于剔除空值、异常值、重复值等。这项繁琐复杂的工作要占据数据分析至少一半的时间，但这又是必需的工作，需认真对待。</p>
+<p>日常数据分析中，我们要积累一些常见的数据清洗方法，例如剔除异常值，可以直接使用3倍标准差判别；重复值和空值可以通过Excel很方便地实现。熟悉这些操作可以大大简化工作量，节约我们的时间。</p>
+<h5 id="2-3数据规整"><a href="#2-3数据规整" class="headerlink" title="2.3数据规整"></a>2.3数据规整</h5><p>数据规整就是把数据按照一定的规则进行排列和存储。每个人都知道，但是却很难做好的工作。笔者见过不少伙伴，包括笔者本人在存储数据时，有时候也会是一团乱麻，这使得在找想要的数据时需要花费不少时间，很令人恼火。</p>
+<p>我们完全可以建立一个文件夹，将数据分类存放，如下图，可以很方便的找到某一次对应的数据：</p>
+<p><img src="/../img/%E6%96%87%E4%BB%B6%E6%95%B0%E6%8D%AE%E6%8E%92%E5%BA%8F.png" alt="文件数据排序图"><br>对于文件内部的数据，可以对数据格式进行美化，例如：新建列名称、统计平均值、分组统计等等来使得数据情况一目了然。</p>
+<h4 id="Step3：描述分析"><a href="#Step3：描述分析" class="headerlink" title="Step3：描述分析"></a>Step3：描述分析</h4><h5 id="3-1-统计分析"><a href="#3-1-统计分析" class="headerlink" title="3.1 统计分析"></a>3.1 统计分析</h5><p>统计分析是数据分析中最广的分析方法。统计分析就是对数据进行文字描述和指标统计。</p>
+<p>文字描述：对数据的基本属性进行刻画，例如空间范围、时间跨度、时间分辨率、空间粒度、数据来源、数据量等。</p>
+<p>指标统计：用以了解数据的形态和分布状况，例如：平均值、中位数；标准差、极差等。反映数据变化范围和集中程度，彰显数据的特征。</p>
+<p>趋势分析：通过对数据的时间序列变化或空间范围变化来推测数据的趋势，如增长率、覆盖面积等，来分析数据的变化趋势。</p>
+<h5 id="3-2-建模分析"><a href="#3-2-建模分析" class="headerlink" title="3.2 建模分析"></a>3.2 建模分析</h5><p>建模主要是根据已有的数据选择特定的模型来对数据进行预测或评价，各行各业都有自己常用的数学分析模型。具体该用哪些模型，在第一步就已经有所涉及。一个思路是我们可以参考别人的工作来总结该研究方向常用的模型，具体的介绍在上一节有具体实例，感兴趣可以看看。</p>
+<p>建立模型是容易的，训练一个好的模型却不容易。许多模型在网上都能找到源代码，但是如何优化这些模型是需要更值得关注。一个模型中包含很多超参数，通过超参数的排列组合可以尽可能找到全局最优组合，可以查看模型的官方文档以获取超参数信息。</p>
+<h4 id="Step4：信息挖掘"><a href="#Step4：信息挖掘" class="headerlink" title="Step4：信息挖掘"></a>Step4：信息挖掘</h4><p>信息挖掘在 《关于数据分析1》 中已有所介绍，主要分为直接信息和间接信息。</p>
+<p>统计分析可以描述数据的基本属性，通过时间对比可以发现时间趋势，空间对比可以发现空间分布规律。</p>
+<p>更重要的是我们需要分析出导致这种现象&#x2F;趋势的原因，这是数据分析水平高低的重要尺度。在确定目标部分就已建议选取自己熟悉的领域，可以让我们在这方面更具优势。写出有价值和一定深度的结论，我们的数据分析才有意义，单纯的数据描述谁都会。</p>
+<h4 id="Step5：分析报告"><a href="#Step5：分析报告" class="headerlink" title="Step5：分析报告"></a>Step5：分析报告</h4><p>到了最后一步，撰写数据分析报告已经是水到渠成。这一部分我们需要注意的是分析报告内容的完整性和逻辑性。</p>
+<p>一份完整的数据报告，至少需要包含以下几部分内容：</p>
+<p>（1）分析目的</p>
+<p>（2）分析背景和意义</p>
+<p>（3）数据来源和方法</p>
+<p>（4）结果与分析</p>
+<p>（5）结论和建议</p>
+<p>事实上数据报告就像是一篇实验报告或作文，把做实验的目的、为什么要做实验、实验的设备和材料、实验的结果和分析、结论顺序叙述即可。搭配上合适的图表+总结，可以让我们的论据更加充分，观点也更加容易接受。</p>
+<h3 id="THE-END"><a href="#THE-END" class="headerlink" title="THE END"></a>THE END</h3><p>本节总结了数据分析的流程，并说明了如何撰写一份数据报告。</p>
+
+    </article>
+    
+    <div class="read-nums">
+      <!-- id 将作为查询条件 -->
+      <span id="2023/09/27/数据分析浅谈3/" class="leancloud_visitors" data-flag-title="Your Article Title">
+        <em class="post-meta-item-text">浏览量</em>
+        <i class="leancloud-visitors-count"></i>
+      </span>
+    </div>
+    <div class="comments-intro">
+      <h2>评论区</h2>
+      <p>欢迎你留下宝贵的意见，昵称输入QQ号会显示QQ头像哦~</p>
+    </div>
+    <div id="vcomments" class="vcomments"></div>
+    
+  </div>
+  <div class="article-catelogue">
+    <div class="article-catelogue--wrapper">
+      <div class="catelogue catelogue-1">
+        <h3>目录</h3>
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%B5%81%E7%A8%8B"><span class="toc-number">1.</span> <span class="toc-text">数据分析的基本流程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Step1%EF%BC%9A%E7%9B%AE%E6%A0%87%E7%A1%AE%E5%AE%9A"><span class="toc-number">1.1.</span> <span class="toc-text">Step1：目标确定</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Step2%EF%BC%9A%E6%95%B0%E6%8D%AE%E5%87%86%E5%A4%87"><span class="toc-number">1.2.</span> <span class="toc-text">Step2：数据准备</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#2-1%E6%95%B0%E6%8D%AE%E8%8E%B7%E5%8F%96"><span class="toc-number">1.2.1.</span> <span class="toc-text">2.1数据获取</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-2%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.2数据清洗</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-3%E6%95%B0%E6%8D%AE%E8%A7%84%E6%95%B4"><span class="toc-number">1.2.3.</span> <span class="toc-text">2.3数据规整</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Step3%EF%BC%9A%E6%8F%8F%E8%BF%B0%E5%88%86%E6%9E%90"><span class="toc-number">1.3.</span> <span class="toc-text">Step3：描述分析</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#3-1-%E7%BB%9F%E8%AE%A1%E5%88%86%E6%9E%90"><span class="toc-number">1.3.1.</span> <span class="toc-text">3.1 统计分析</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-2-%E5%BB%BA%E6%A8%A1%E5%88%86%E6%9E%90"><span class="toc-number">1.3.2.</span> <span class="toc-text">3.2 建模分析</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Step4%EF%BC%9A%E4%BF%A1%E6%81%AF%E6%8C%96%E6%8E%98"><span class="toc-number">1.4.</span> <span class="toc-text">Step4：信息挖掘</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Step5%EF%BC%9A%E5%88%86%E6%9E%90%E6%8A%A5%E5%91%8A"><span class="toc-number">1.5.</span> <span class="toc-text">Step5：分析报告</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#THE-END"><span class="toc-number">2.</span> <span class="toc-text">THE END</span></a></li></ol>
+      </div>
+      
+        <div class="catelogue catelogue-2">
+           
+          
+            <p>
+              <span>下一篇</span>
+              <a href="/2023/09/27/数据分析浅谈4/">关于数据分析 4</a>
+            </p>
+          
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+<script src="http://cdn.yangxiang.cc/prism.js"></script>
+
+<script>
+  // var定义，避免pjax重新进来造成的重复声明错误
+  var config = JSON.parse('{"enable":true,"appId":"Pf8zCXGEH1qsprnWfikVVujL-gzGzoHsz","appKey":"qOqoiUHhH1TGtLRUYURkLRQX","placeholder":"请留下你宝贵的意见吧~","meta":["Gray"],"recordIP":true,"visitor":true,"enableQQ":true}')
+  new Valine({
+    el: '#vcomments',
+    appId: config.appId,
+    appKey: config.appKey,
+    placeholder: config.placeholder,
+    meta: config.meta,
+    recordIP: config.recordIP,
+    visitor: config.visitor,
+    enableQQ: config.enableQQ,
+    path: '2023/09/27/数据分析浅谈3/'
+  })
+</script>
+
+
+<script>
+  $(document).on('pjax:complete', function() {
+    const tocs = document.querySelector('.toc')
+    const links = tocs ? tocs.querySelectorAll('a') : []
+    links.forEach(link => {
+      link.addEventListener('click', e => {
+        const href = decodeURIComponent(e.href)
+        href.search(/#(.*)/)
+        const id = RegExp.$1
+        const target = document.querySelector('#' + id)
+        const top = target.offsetTop
+        document.documentElement.scrollTo({
+          top: top - 100,
+          behavior: 'smooth'
+        })
+        e.preventDefault()
+      })
+    })
+  })
+</script> 
+
+</div>
+      <div class="main-right-wrapper"><div class="main-right">
+  <div class="main-right--board">
+    <div class="main-right--title">
+      <h5>公告栏</h5>
+      <i class="iconfont icon-gonggao"></i>
+    </div>
+    <div class="main-right--content">
+      Hello~~~ 大家好，我是Gray，欢迎你们来到我的博客，希望大家能在这里收获到有用的东西！ 
+    </div>
+  </div>
+
+  <div id="aplayer" class="main-right--music"></div>
+
+  <div class="operate-items">
+    <div class="operate-item backtop">
+      <i class="iconfont icon-huidaodingbu"></i>
+      <span>回到顶部</span>
+    </div>
+    
+    <div class="operate-item turn-comment hidden">
+      <i class="iconfont icon-pinglun"></i>
+      <span>查看评论</span>
+    </div>
+    
+  </div>
+
+  <div class="main-right--site">
+    <div class="main-right--power">
+      <p>Power By <a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/docs/">Hexo</a>.</p>
+      <p>Theme：<a target="_blank" rel="noopener" href="https://github.com/Aizener/hexo-theme-cola">Cola.</a></p>
+    </div>
+    <p class="main-right--refer"><a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/#/Integrated/index">粤ICP备2023005384号-1</a> </p>
+  </div>
+</div>
+
+<script>
+  function setOperateItem () {
+    const reg = /\d{4}\/\d{2}\/\d{2}\/.+/
+    const path = location.pathname
+    const operateDom = document.querySelector('.main-right .operate-items')
+    const commentDom = document.querySelector('.turn-comment')
+    const cateloguDom = document.querySelector('.article-catelogue > .article-catelogue--wrapper');
+
+    if (commentDom) {
+      if (reg.test(path) || path.match(/\/log\/.+/)) {
+        commentDom.classList.remove('hidden')
+        const newDom = operateDom.cloneNode(true);
+        const _backtopDom = newDom.querySelector('.backtop');
+        const _commentDom = newDom.querySelector('.turn-comment');
+        console.log(_commentDom)
+        _backtopDom.addEventListener('click', () => backTopEvent());
+        _commentDom.addEventListener('click', () => commentDomEvent());
+
+        cateloguDom.appendChild(newDom);
+      } else {
+        commentDom.classList.add('hidden')
+      }
+    }
+  }
+
+  setOperateItem()
+  const musics = JSON.parse(`[{"name":"Baby dont cry","artist":"金渽耶","url":"http://music.163.com/song/media/outer/url?id=466425831.mp3","cover":"https://p1.music.126.net/_k9YXo85nVvOcq23BNdeLQ==/1388683193163389.jpg?param=200y200"},{"name":"天気の子","artist":"STRlighT","url":"http://music.163.com/song/media/outer/url?id=1973129951.mp3","cover":"https://p1.music.126.net/_k9YXo85nVvOcq23BNdeLQ==/1388683193163389.jpg?param=200y200"},{"name":"我的未来式","artist":"陈每文  郭采洁  爱情公寓全体","url":"http://music.163.com/song/media/outer/url?id=1434618996.mp3","cover":"https://p1.music.126.net/_k9YXo85nVvOcq23BNdeLQ==/1388683193163389.jpg?param=200y200"},{"name":"这里是神奇的赛尔号","artist":"张杰","url":"http://music.163.com/song/media/outer/url?id=1999304781.mp3","cover":"https://p1.music.126.net/_k9YXo85nVvOcq23BNdeLQ==/1388683193163389.jpg?param=200y200"},{"name":"人间不值得","artist":"黄诗扶","url":"http://music.163.com/song/media/outer/url?id=1340543218.mp3","cover":"https://p1.music.126.net/_k9YXo85nVvOcq23BNdeLQ==/1388683193163389.jpg?param=200y200"},{"name":"吹梦到西洲","artist":"黄诗扶","url":"http://music.163.com/song/media/outer/url?id=1376873330.mp3","cover":"https://p1.music.126.net/_k9YXo85nVvOcq23BNdeLQ==/1388683193163389.jpg?param=200y200"},{"name":"撒野","artist":"巫哲小说《撒野》官方主题曲","url":"http://music.163.com/song/media/outer/url?id=483937795.mp3","cover":"https://p1.music.126.net/_k9YXo85nVvOcq23BNdeLQ==/1388683193163389.jpg?param=200y200"},{"name":"悬溺","artist":"葛东琪","url":"http://music.163.com/song/media/outer/url?id=1397345903.mp3","cover":"https://p1.music.126.net/_k9YXo85nVvOcq23BNdeLQ==/1388683193163389.jpg?param=200y200"},{"name":"孤雏","artist":"AGA","url":"http://music.163.com/song/media/outer/url?id=421486605.mp3","cover":"https://p1.music.126.net/txlgFi1ow2KPpkJxsATzvw==/109951166037431044.jpg?param=200y200"},{"name":"我知道","artist":"By2","url":"http://music.163.com/song/media/outer/url?id=2009552690.mp3","cover":"https://p1.music.126.net/vooe4WE0lNgH1Z3CS8rBlg==/109951168636658829.jpg?param=200y200"},{"name":"一个人想着一个人","artist":"如懿","url":"http://music.163.com/song/media/outer/url?id=1429716422.mp3","cover":"https://p1.music.126.net/aHtRGt5v-6EcFiPBQf1ENg==/109951166667082742.jpg?param=200y200"},{"name":"形容","artist":"沈以诚","url":"http://music.163.com/song/media/outer/url?id=1336856864.mp3","cover":"https://p1.music.126.net/_k9YXo85nVvOcq23BNdeLQ==/1388683193163389.jpg?param=200y200"},{"name":"for ya","artist":"蒋小呢","url":"http://music.163.com/song/media/outer/url?id=1497588709.mp3","cover":"https://p1.music.126.net/_k9YXo85nVvOcq23BNdeLQ==/1388683193163389.jpg?param=200y200"},{"name":"如果爱忘了","artist":"藤柒吖","url":"http://music.163.com/song/media/outer/url?id=2016124934.mp3","cover":"https://p1.music.126.net/aHtRGt5v-6EcFiPBQf1ENg==/109951166667082742.jpg?param=200y200"},{"name":"雨爱","artist":"杨丞琳","url":"http://music.163.com/song/media/outer/url?id=5235487.mp3","cover":"https://p1.music.126.net/vooe4WE0lNgH1Z3CS8rBlg==/109951168636658829.jpg?param=200y200"},{"name":"心墙","artist":"九三","url":"http://music.163.com/song/media/outer/url?id=1946892963.mp3","cover":"https://p1.music.126.net/vooe4WE0lNgH1Z3CS8rBlg==/109951168636658829.jpg?param=200y200"},{"name":"达尔文","artist":"yihuik苡慧","url":"http://music.163.com/song/media/outer/url?id=1992083081.mp3","cover":"https://p1.music.126.net/vooe4WE0lNgH1Z3CS8rBlg==/109951168636658829.jpg?param=200y200"},{"name":"在你的身边","artist":"盛哲","url":"http://music.163.com/song/media/outer/url?id=475479888.mp3","cover":"https://p1.music.126.net/vooe4WE0lNgH1Z3CS8rBlg==/109951168636658829.jpg?param=200y200"},{"name":"我怀念的","artist":"孙燕姿","url":"http://music.163.com/song/media/outer/url?id=1938637109.mp3","cover":"https://p1.music.126.net/vooe4WE0lNgH1Z3CS8rBlg==/109951168636658829.jpg?param=200y200"},{"name":"恶作剧","artist":"Sasablue","url":"http://music.163.com/song/media/outer/url?id=1949975568.mp3","cover":"https://p1.music.126.net/vooe4WE0lNgH1Z3CS8rBlg==/109951168636658829.jpg?param=200y200"},{"name":"Where Did U Go","artist":"G.E.M.邓紫棋","url":"http://music.163.com/song/media/outer/url?id=234064.mp3","cover":"https://p1.music.126.net/vooe4WE0lNgH1Z3CS8rBlg==/109951168636658829.jpg?param=200y200"},{"name":"光亮","artist":"周深","url":"http://music.163.com/song/media/outer/url?id=1899994040.mp3","cover":"https://p1.music.126.net/vooe4WE0lNgH1Z3CS8rBlg==/109951168636658829.jpg?param=200y200"},{"name":"烟雨行舟","artist":"伦桑","url":"http://music.163.com/song/media/outer/url?id=32922246.mp3","cover":"https://p1.music.126.net/vooe4WE0lNgH1Z3CS8rBlg==/109951168636658829.jpg?param=200y200"},{"name":"小城夏天","artist":"LBI利比","url":"http://music.163.com/song/media/outer/url?id=1934251776.mp3","cover":"https://p1.music.126.net/vooe4WE0lNgH1Z3CS8rBlg==/109951168636658829.jpg?param=200y200"},{"name":"世界上的另一个我","artist":"阿肆 / 郭采洁","url":"http://music.163.com/song/media/outer/url?id=514765154.mp3","cover":"https://p1.music.126.net/vooe4WE0lNgH1Z3CS8rBlg==/109951168636658829.jpg?param=200y200"},{"name":"他不懂","artist":"张杰","url":"http://music.163.com/song/media/outer/url?id=28059417.mp3","cover":"/"},{"name":"特别的人","artist":"方大同","url":"http://music.163.com/song/media/outer/url?id=28403111.mp3","cover":"/"},{"name":"突然好想你","artist":"五月天","url":"http://music.163.com/song/media/outer/url?id=2008518320.mp3","cover":"/"},{"name":"最后一页","artist":"江语晨","url":"http://music.163.com/song/media/outer/url?id=247936.mp3","cover":"/"},{"name":"达尔文","artist":"林俊杰","url":"http://music.163.com/song/media/outer/url?id=2019573476.mp3","cover":"/"},{"name":"Something Just Like This(Megamix)","artist":"AnDyWuMUSICLAND / Worry Free Studios","url":"http://music.163.com/song/media/outer/url?id=471565537.mp3","cover":"https://p1.music.126.net/4C5lizrpDD4x2jQyJncu5Q==/109951164390015043.jpg?param=200y200"},{"name":"Breathe","artist":"Kenzie","url":"http://music.163.com/song/media/outer/url?id=512621132.mp3","cover":"https://p1.music.126.net/4C5lizrpDD4x2jQyJncu5Q==/109951164390015043.jpg?param=200y200"},{"name":"Fool For You","artist":"KASTRA","url":"http://music.163.com/song/media/outer/url?id=1817576399.mp3","cover":"https://p1.music.126.net/4C5lizrpDD4x2jQyJncu5Q==/109951164390015043.jpg?param=200y200"},{"name":"Empty Love","artist":"Lulleaux / Kid Princess","url":"http://music.163.com/song/media/outer/url?id=1435828582.mp3","cover":"https://p1.music.126.net/4C5lizrpDD4x2jQyJncu5Q==/109951164390015043.jpg?param=200y200"},{"name":"Numb Little Bug","artist":"Em Beihold","url":"http://music.163.com/song/media/outer/url?id=1915796767.mp3","cover":"https://p1.music.126.net/4C5lizrpDD4x2jQyJncu5Q==/109951164390015043.jpg?param=200y200"},{"name":"Slow Down","artist":"Madnap / Pauline Herr","url":"http://music.163.com/song/media/outer/url?id=1356658022.mp3","cover":"https://p1.music.126.net/4C5lizrpDD4x2jQyJncu5Q==/109951164390015043.jpg?param=200y200"},{"name":"Bet On Me (Organic Version)","artist":"Walk off the Earth / D Smoke","url":"http://music.163.com/song/media/outer/url?id=1938756186.mp3","cover":"https://p1.music.126.net/4C5lizrpDD4x2jQyJncu5Q==/109951164390015043.jpg?param=200y200"},{"name":"In The Shadow Of The Sun","artist":"Professor Green","url":"http://music.163.com/song/media/outer/url?id=29412405.mp3","cover":"https://p1.music.126.net/4C5lizrpDD4x2jQyJncu5Q==/109951164390015043.jpg?param=200y200"},{"name":"So Far Away (Acoustic)","artist":"Adam Christopher","url":"http://music.163.com/song/media/outer/url?id=1313584359.mp3","cover":"https://p1.music.126.net/4C5lizrpDD4x2jQyJncu5Q==/109951164390015043.jpg?param=200y200"},{"name":"Love Is Gone (Acoustic)","artist":"SLANDER / Dylan Matthew","url":"http://music.163.com/song/media/outer/url?id=1401671455.mp3","cover":"https://p1.music.126.net/4C5lizrpDD4x2jQyJncu5Q==/109951164390015043.jpg?param=200y200"},{"name":"Take My Hand","artist":"Cécile Corbel","url":"http://music.163.com/song/media/outer/url?id=1500439504.mp3","cover":"https://p1.music.126.net/4C5lizrpDD4x2jQyJncu5Q==/109951164390015043.jpg?param=200y200"},{"name":"The Way I Still Love You","artist":"Reynard Silva","url":"http://music.163.com/song/media/outer/url?id=28718313.mp3","cover":"https://p1.music.126.net/4C5lizrpDD4x2jQyJncu5Q==/109951164390015043.jpg?param=200y200"},{"name":"Fatal Love","artist":"Jori King","url":"http://music.163.com/song/media/outer/url?id=32431987.mp3","cover":"https://p1.music.126.net/4C5lizrpDD4x2jQyJncu5Q==/109951164390015043.jpg?param=200y200"},{"name":"Watch Me Work","artist":"Tinashe","url":"http://music.163.com/song/media/outer/url?id=1304347114.mp3","cover":"https://p1.music.126.net/4C5lizrpDD4x2jQyJncu5Q==/109951164390015043.jpg?param=200y200"},{"name":"Stay The Night","artist":"Just Kiddin / Camden Cox","url":"http://music.163.com/song/media/outer/url?id=1376075781.mp3","cover":"https://p1.music.126.net/4C5lizrpDD4x2jQyJncu5Q==/109951164390015043.jpg?param=200y200"},{"name":"Normal No More","artist":"TYSM","url":"http://music.163.com/song/media/outer/url?id=1440570723.mp3","cover":"https://p1.music.126.net/4C5lizrpDD4x2jQyJncu5Q==/109951164390015043.jpg?param=200y200"},{"name":"Wake (Live)","artist":"Hillsong Young & Free","url":"http://music.163.com/song/media/outer/url?id=1873321491.mp3","cover":"https://p1.music.126.net/4C5lizrpDD4x2jQyJncu5Q==/109951164390015043.jpg?param=200y200"},{"name":"Bamba","artist":"Armağan Oruç","url":"http://music.163.com/song/media/outer/url?id=1892409985.mp3","cover":"https://p1.music.126.net/4C5lizrpDD4x2jQyJncu5Q==/109951164390015043.jpg?param=200y200"},{"name":"MAGENTA POTION (Extended Mix)","artist":"EmoCosine","url":"http://music.163.com/song/media/outer/url?id=1892833643.mp3","cover":"https://p1.music.126.net/4C5lizrpDD4x2jQyJncu5Q==/109951164390015043.jpg?param=200y200"},{"name":"TikTok","artist":"2PM","url":"http://music.163.com/song/media/outer/url?id=2018503295.mp3","cover":"/"},{"name":"Payphone","artist":"Maroon 5 / Wiz Khalifa","url":"http://music.163.com/song/media/outer/url?id=473120817.mp3","cover":"/"},{"name":"Hey Mama","artist":"David Guetta","url":"http://music.163.com/song/media/outer/url?id=33678726.mp3","cover":"https://p1.music.126.net/4C5lizrpDD4x2jQyJncu5Q==/109951164390015043.jpg?param=200y200"},{"name":"Do It(Remix)","artist":"","url":"http://music.163.com/song/media/outer/url?id=1836118595.mp3","cover":"https://p1.music.126.net/4C5lizrpDD4x2jQyJncu5Q==/109951164390015043.jpg?param=200y200"},{"name":"Lost Control (Original Mix)","artist":"Tyron Hapi / Bianca","url":"http://music.163.com/song/media/outer/url?id=417859039.mp3","cover":"/"},{"name":"Move Up (Lost Gravity)","artist":"Mr. Polska","url":"http://music.163.com/song/media/outer/url?id=406072775.mp3","cover":"/"},{"name":"Light It Up","artist":"Robin Hustin / TobiMorrow / Jex","url":"http://music.163.com/song/media/outer/url?id=1301572562.mp3","cover":"/"},{"name":"Best of 2012: Payphone/Call Me Maybe/Wide Awake/Starship/We Are Young","artist":"Anthem Lights","url":"http://music.163.com/song/media/outer/url?id=33418570.mp3","cover":"http://p2.music.126.net/SeCVTnBhxJ6YDphRz-5fcQ==/109951164914004504.jpg?param=640y300"},{"name":"We Are Never Getting Back Together","artist":"Anthem Lights","url":"http://music.163.com/song/media/outer/url?id=33418567.mp3","cover":"http://p2.music.126.net/SeCVTnBhxJ6YDphRz-5fcQ==/109951164914004504.jpg?param=640y300"},{"name":"Dont You Worry Child","artist":"Anthem Lights","url":"http://music.163.com/song/media/outer/url?id=33418572.mp3","cover":"http://p2.music.126.net/SeCVTnBhxJ6YDphRz-5fcQ==/109951164914004504.jpg?param=640y300"},{"name":"A Thousand Years","artist":"Anthem Lights","url":"http://music.163.com/song/media/outer/url?id=1414109932.mp3","cover":"http://p2.music.126.net/SeCVTnBhxJ6YDphRz-5fcQ==/109951164914004504.jpg?param=640y300"},{"name":"瞬く星の下で","artist":"魔笛magi","url":"http://music.163.com/song/media/outer/url?id=28633194.mp3","cover":"https://p1.music.126.net/_k9YXo85nVvOcq23BNdeLQ==/1388683193163389.jpg?param=200y200"},{"name":"Magic","artist":"魔笛magi","url":"http://music.163.com/song/media/outer/url?id=26218796.mp3","cover":"https://p1.music.126.net/_k9YXo85nVvOcq23BNdeLQ==/1388683193163389.jpg?param=200y200"},{"name":"光-HIKARI-","artist":"魔笛magi","url":"http://music.163.com/song/media/outer/url?id=28633197.mp3","cover":"https://p1.music.126.net/_k9YXo85nVvOcq23BNdeLQ==/1388683193163389.jpg?param=200y200"},{"name":"V.I.P","artist":"魔笛magi","url":"http://music.163.com/song/media/outer/url?id=28633191.mp3","cover":"https://p1.music.126.net/_k9YXo85nVvOcq23BNdeLQ==/1388683193163389.jpg?param=200y200"},{"name":"ANNIVERSARY","artist":"魔笛magi","url":"http://music.163.com/song/media/outer/url?id=28633195.mp3","cover":"https://p1.music.126.net/_k9YXo85nVvOcq23BNdeLQ==/1388683193163389.jpg?param=200y200"},{"name":"The Bravery","artist":"魔笛magi","url":"http://music.163.com/song/media/outer/url?id=28633193.mp3","cover":"https://p1.music.126.net/_k9YXo85nVvOcq23BNdeLQ==/1388683193163389.jpg?param=200y200"},{"name":"one step further","artist":"魔笛magi","url":"http://music.163.com/song/media/outer/url?id=28633200.mp3","cover":"https://p1.music.126.net/_k9YXo85nVvOcq23BNdeLQ==/1388683193163389.jpg?param=200y200"},{"name":"エデン","artist":"魔笛magi","url":"http://music.163.com/song/media/outer/url?id=28633196.mp3","cover":"https://p1.music.126.net/_k9YXo85nVvOcq23BNdeLQ==/1388683193163389.jpg?param=200y200"},{"name":"Call of Silence","artist":"Clear Sky remix","url":"http://music.163.com/song/media/outer/url?id=1980337835.mp3","cover":"https://p1.music.126.net/aHtRGt5v-6EcFiPBQf1ENg==/109951166667082742.jpg?param=200y200"},{"name":"世界は恋に落ちている","artist":"かぴ","url":"http://music.163.com/song/media/outer/url?id=30251317.mp3","cover":"http://p2.music.126.net/yerXrS_HKC-WC4wfm2TyQg==/7850513022421641.jpg?param=130y130"},{"name":"花に亡霊","artist":"ヨルシカ","url":"http://music.163.com/song/media/outer/url?id=1442466883.mp3","cover":"https://p1.music.126.net/vooe4WE0lNgH1Z3CS8rBlg==/109951168636658829.jpg?param=200y200"},{"name":"コンプリケイション","artist":"ROOKiEZ is PUNKD","url":"http://music.163.com/song/media/outer/url?id=812005.mp3","cover":"https://p1.music.126.net/vooe4WE0lNgH1Z3CS8rBlg==/109951168636658829.jpg?param=200y200"},{"name":"Crossing Field","artist":"LiSA","url":"http://music.163.com/song/media/outer/url?id=29027453.mp3","cover":"https://p1.music.126.net/vooe4WE0lNgH1Z3CS8rBlg==/109951168636658829.jpg?param=200y200"},{"name":"六等星の夜","artist":"Aimer","url":"http://music.163.com/song/media/outer/url?id=31649356.mp3","cover":"https://p1.music.126.net/vooe4WE0lNgH1Z3CS8rBlg==/109951168636658829.jpg?param=200y200"},{"name":"カタオモイ","artist":"Aimer","url":"http://music.163.com/song/media/outer/url?id=524148291.mp3","cover":"https://p1.music.126.net/vooe4WE0lNgH1Z3CS8rBlg==/109951168636658829.jpg?param=200y200"},{"name":"Flower Flower","artist":"IMLAY, MYLK","url":"http://music.163.com/song/media/outer/url?id=544292631.mp3","cover":"https://p1.music.126.net/vooe4WE0lNgH1Z3CS8rBlg==/109951168636658829.jpg?param=200y200"},{"name":"メモリー","artist":"小春めう","url":"http://music.163.com/song/media/outer/url?id=1388559200.mp3","cover":"https://p1.music.126.net/vooe4WE0lNgH1Z3CS8rBlg==/109951168636658829.jpg?param=200y200"},{"name":"Magic","artist":"Mrs.GREEN APPLE","url":"http://music.163.com/song/media/outer/url?id=2055105723.mp3","cover":"https://p1.music.126.net/txlgFi1ow2KPpkJxsATzvw==/109951166037431044.jpg?param=200y200"},{"name":"ダンスホール","artist":"Mrs. GREEN APPLE","url":"http://music.163.com/song/media/outer/url?id=1950112498.mp3","cover":"https://p1.music.126.net/txlgFi1ow2KPpkJxsATzvw==/109951166037431044.jpg?param=200y200"},{"name":"NIGHT DANCER","artist":"imase","url":"http://music.163.com/song/media/outer/url?id=1973593792.mp3","cover":"https://p1.music.126.net/txlgFi1ow2KPpkJxsATzvw==/109951166037431044.jpg?param=200y200"},{"name":"Neverland","artist":"Trifect / 初音ミク","url":"http://music.163.com/song/media/outer/url?id=417250297.mp3","cover":"https://p1.music.126.net/vooe4WE0lNgH1Z3CS8rBlg==/109951168636658829.jpg?param=200y200"},{"name":"Blush","artist":"Fusq / MYLK","url":"http://music.163.com/song/media/outer/url?id=485347176.mp3","cover":"https://p1.music.126.net/vooe4WE0lNgH1Z3CS8rBlg==/109951168636658829.jpg?param=200y200"},{"name":"ไม่ได้ก็ไม่เอา","artist":"PiXXiE - Zom Marie","url":"http://music.163.com/song/media/outer/url?id=1981613252.mp3","cover":"https://p1.music.126.net/txlgFi1ow2KPpkJxsATzvw==/109951166037431044.jpg?param=200y200"},{"name":"三葉のテーマ","artist":"RADWIMPS","url":"http://music.163.com/song/media/outer/url?id=1406638282.mp3","cover":"http://img1.kuwo.cn/star/starheads/500/12/62/1414687515.jpg"},{"name":"Daylight","artist":"Seredris","url":"http://music.163.com/song/media/outer/url?id=1817576399.mp3","cover":"https://p1.music.126.net/vooe4WE0lNgH1Z3CS8rBlg==/109951168636658829.jpg?param=200y200"},{"name":"Akiba","artist":"Synthion","url":"http://music.163.com/song/media/outer/url?id=447280094.mp3","cover":"https://p1.music.126.net/vooe4WE0lNgH1Z3CS8rBlg==/109951168636658829.jpg?param=200y200"}]`)
+  const ap = new APlayer({
+    container: document.querySelector('#aplayer'),
+    audio: musics,
+  })
+
+  $(document).on('pjax:complete', function() {
+    setOperateItem()
+  })
+
+  document.querySelector('.backtop').addEventListener('click', () => {
+    backTopEvent();
+  })
+  const dom = document.querySelector('.turn-comment')
+  dom && dom.addEventListener('click', () => {
+    commentDomEvent();
+  })
+
+  function backTopEvent() {
+    document.documentElement.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    })
+  }
+
+  function commentDomEvent() {
+    const commentDom = document.querySelector('.comments-intro')
+    if (!commentDom) return
+    const top = commentDom.offsetTop, height = commentDom.offsetHeight
+    document.documentElement.scrollTo({
+      top: top - 2 * height,
+      behavior: 'smooth'
+    })
+  }
+</script></div>
+    </section>
+  </div>
+  <div id="progress" class="progress"></div>
+  <div id="gray" class="gray"></div>
+
+  <script>
+    function initScroll () {
+      document.addEventListener('scroll', () => {
+        const doc = document.documentElement
+        const scrollTop = doc.scrollTop
+        const pageHeight = doc.offsetHeight
+        const clientHeight = doc.clientHeight
+        const ratio = scrollTop / (pageHeight - clientHeight)
+        const progress = document.querySelector('#progress')
+        const avatarImg = document.querySelector('.main-left--avatar')
+        progress.style.width = (100 * ratio) + '%'
+        avatarImg.style.transform = `rotate(${360 * ratio}deg)`
+      })
+    }
+
+    const rootPath = "/"
+
+    const checkAndSetArticlePageLayout = () => {
+      if (/^\/?\d{4}\/\d{2}\/\d{2}\/.*/.test(location.pathname.replace(rootPath, ''))) {
+        $('.main-container, .main-right, .main-right-wrapper').addClass('is-article')
+      } else {
+        $('.main-container, .main-right, .main-right-wrapper').removeClass('is-article')
+      }
+    }
+
+    const gray = "none"
+    const setGrayStyle = () => {
+      if (gray === 'none') {
+        return
+      } else if (gray === 'index') {
+        location.pathname === '/' ? $('#gray').show() : $('#gray').hide()
+      } else if (gray === 'all') {
+        $('#gray').show()
+      }
+    }
+    setGrayStyle()
+
+
+    window.onload = function () {
+      checkAndSetArticlePageLayout()
+      setTimeout(() => {
+        $('#load').slideUp()
+        $('#container').slideToggle()
+        setTimeout(() => {
+          initScroll();
+          window.loadImageFn();
+        }, 500)
+      }, 500)
+    }
+    
+    let status = 0
+    // 对所有链接跳转事件绑定pjax容器container
+    $(document).pjax('a[target!=_blank]', '#main-container', {
+      container: '#main-container',
+      fragment: '#main-container',
+      timeout: 8000
+    })
+
+    $(document).on('pjax:start', function() {
+    })
+    $(document).on('pjax:complete', function() {
+      status = 0
+      $('.main-container').addClass('to-up').on('animationend', function() {
+        $(this).removeClass('to-up')
+      })
+      setGrayStyle()
+      checkAndSetArticlePageLayout()
+    })
+    $(document).on('pjax:popstate', function() {
+      status = -1
+      checkAndSetArticlePageLayout()
+      // $('.main-container').fadeIn()
+    })
+  </script>
+</body>
+</html>
